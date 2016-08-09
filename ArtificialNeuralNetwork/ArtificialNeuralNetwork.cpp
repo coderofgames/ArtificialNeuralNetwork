@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "Timer.h"
 #include <iostream>
 #include <vector>
 
@@ -27,6 +28,7 @@ float sigmoid(float x)
 
 int main(int argc, char* argv[])
 {
+	Timer timer;
 
 	// TRAINING SET FOR EXCLUSIVE OR GATE
 	vector<vector2d > training;
@@ -68,6 +70,9 @@ int main(int argc, char* argv[])
 	float alpha = 0.3f;
 
 	float sum_squared_errors = 0.0f;
+
+	timer.Start();
+//	Sleep(2000);
 
 
 	for (int p = 0; p < 5000; p++)
@@ -171,11 +176,15 @@ int main(int argc, char* argv[])
 				cout << "Weight Matrix2 1: " << weight_mat_2[1] << endl;
 			}
 #endif
+
+			
 		}
-		cout << sum_squared_errors << endl;
+		//cout << sum_squared_errors << endl;
 		if (sum_squared_errors < 0.03)
 		{
-			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.03" << endl;
+			timer.Update();
+			timer.Stop();
+			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.03"<< endl <<"Total calculation performed in " << timer.GetTimeDelta() << " seconds" << endl;
 			break;
 		}
 
