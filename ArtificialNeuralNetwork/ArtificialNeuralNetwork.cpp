@@ -630,42 +630,40 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 
 			hidden_layer_ = input_matrix * w_m_1_2_;// -theta_1_;
 
-			
-			//for (int i = 0; i < 2; i++)
-			//	hidden_layer_(0, i) = sigmoid(hidden_layer_(0, i));
-			sigmoid(hidden_layer_ , hidden_layer_);
-		//	hidden_layer_.print();
+
+			sigmoid(hidden_layer_, hidden_layer_);
+
 			// OVERWRITE 3rd INPUT
 			hidden_layer_(0, 2) = -1.0f;
 
-			out_ = hidden_layer_ * w_m_2_3_;// -theta_2_;
-			
+			out_ = hidden_layer_ * w_m_2_3_;
+
 			out_(0, 0) = sigmoid(out_(0, 0));
-		//	out_.print();
+
 #ifdef VERBOSE
 			if (p % 250 == 0)
 			{
-				cout << "Hidden Layer: " << hidden_layer[0] << ", " << hidden_layer[1] << endl;
-				cout << "Output: " << output_neuron << endl;
+				hidden_layer_.print();
+				cout<<endl;
+				out_(0, 0).print();
+				cout<<endl;
 			}
 #endif
 			output_error = desired_output[q] - out_(0, 0);
 
 			sum_squared_errors += output_error * output_error;
 
+
 			// back propogate
-			//del_3_2_(0, 0) = out_(0, 0) * (1 - out_(0, 0)) * output_error;
-
-			//float correct_val_1 = hidden_layer_(0, 0)*(1 - hidden_layer_(0, 0)) * w_m_2_3_(0, 0) * del_3_2_(0, 0);
-			//float correct_val_2 = hidden_layer_(0, 1)*(1 - hidden_layer_(0, 1)) * w_m_2_3_(1, 0) * del_3_2_(0, 0);
-
 
 			anti_sigmoid(del_3_2_, out_);
 
 			del_3_2_ = del_3_2_ * output_error;
 
-			anti_sigmoid(del_2_1_, hidden_layer_);// ;// *del_3_2_(0, 0);
-			
+
+
+			anti_sigmoid(del_2_1_, hidden_layer_);
+
 			// put the vector on the diagonal for next operation ...
 			matrix ident_22(3, 3);
 			for (int i = 0; i < 3; i++)
@@ -676,11 +674,10 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 					else ident_22(i, h) = 0.0f;
 				}
 			}
-			
+
 			del_2_1_ = ident_22 * w_m_2_3_ * del_3_2_(0, 0);
 
-			//del_2_1_.transpose();
-			
+
 			// weight deltas
 
 			w_m_delta_2_ = hidden_layer_ * alpha * del_3_2_(0, 0);
@@ -690,7 +687,12 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 
 #ifdef VERBOSE
 			if (p % 250 == 0)
-				cout << "Delta 5: " << deltas[2] << ", Delta 3: " << deltas[0] << ", Delta 4: " << deltas[1] << endl;
+			{ 
+				del_2_1_.print();
+				cout<<endl;
+				de_3_2_.print();
+				cout << endl;
+			}
 #endif
 		
 			w_m_delta_1_ = del_2_1_ * input_matrix   * alpha;
@@ -700,13 +702,10 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 #ifdef VERBOSE
 			if (p % 250 == 0)
 			{
-				cout << "Weight Matrix Deltas 00: " << weight_mat_1_delta[0][0] << endl;
-				cout << "Weight Matrix Deltas 10: " << weight_mat_1_delta[1][0] << endl;
-				cout << "Weight Matrix Deltas 20: " << weight_mat_1_delta[2][0] << endl;
-
-				cout << "Weight Matrix Deltas 01: " << weight_mat_1_delta[0][1] << endl;
-				cout << "Weight Matrix Deltas 11: " << weight_mat_1_delta[1][1] << endl;
-				cout << "Weight Matrix Deltas 21: " << weight_mat_1_delta[2][1] << endl;
+				w_m_delta_1_.print();
+				cout<<endl;
+				w_m_delta_2_.print();
+				cout << endl;
 			}
 #endif
 			// update weights
@@ -719,20 +718,10 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 #ifdef VERBOSE
 			if (p % 250 == 0)
 			{
-				cout << "Weight Matrix 00: " << weight_mat_1[0][0] << endl;
-				cout << "Weight Matrix 10: " << weight_mat_1[1][0] << endl;
-				//cout << "Weight Matrix Deltas 20: " << weight_mat_1_delta[2][0] << endl;
-
-				cout << "Weight Matrix 01: " << weight_mat_1[0][1] << endl;
-				cout << "Weight Matrix 11: " << weight_mat_1[1][1] << endl;
-				//cout << "Weight Matrix Deltas 21: " << weight_mat_1_delta[2][1] << endl;
-				cout << "Theta 3: " << thetas[0] << endl;
-				cout << "Theta 4: " << thetas[1] << endl;
-
-				cout << "Theta 5: " << thetas[2] << endl;
-
-				cout << "Weight Matrix2 0: " << weight_mat_2[0] << endl;
-				cout << "Weight Matrix2 1: " << weight_mat_2[1] << endl;
+				w_m_1_2_.print();
+				cout<<endl;
+				w_m_2_3_.print();
+				cout << endl;
 			}
 #endif
 
