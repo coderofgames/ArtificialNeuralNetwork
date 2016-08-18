@@ -607,17 +607,21 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 	matrix w_m_delta_2_(3, 1);
 
 
-	float alpha = 0.3f;
+	float alpha = 0.3;
 
 	float sum_squared_errors = 0.0f;
 
 	timer.Start();
 	//	Sleep(2000);
 
+	float last_sum_squared_errors = 0.0f;
+	int positive_error_delta_count = 0;
+	int negative_error_delta_count = 0;
 
 	for (int p = 0; p < num_iterations; p++)
 	{
 		sum_squared_errors = 0.0f;
+		
 		for (int q = 0; q < 4; q++)
 		{
 			input_matrix(0, 0) = training[q].v[0];
@@ -724,9 +728,8 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 				cout << endl;
 			}
 #endif
-
-
 		}
+
 		//cout << sum_squared_errors << endl;
 		if (sum_squared_errors < 0.03)
 		{
@@ -735,11 +738,259 @@ void Compute_Simple_XOR_network_version_4(int num_iterations)
 			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.03" << endl << "Total calculation performed in " << timer.GetTimeDelta() << " seconds" << endl;
 			break;
 		}
-
-
 	}
+}
 
 
+void Compute_Simple_XOR_network_version_5(int num_iterations)
+{
+	Timer timer;
+
+	// TRAINING SET FOR EXCLUSIVE OR GATE
+	vector<vector2d > training;
+	training.push_back(vector2d{ { 0.f, 0.f } });
+	training.push_back(vector2d{ { 0.f, 1.f } });
+	training.push_back(vector2d{ { 1.f, 0.f } });
+	training.push_back(vector2d{ { 1.f, 1.f } });
+
+	float desired_output[4] = { 0.f, 1.f, 1.f, 0.f };
+
+	int input_data_size = 1;
+	int num_inputs = 2;
+	int num_hidden = 2;
+	int num_outputs = 1;
+
+	// ==========================================
+	matrix input_matrix( 1, num_inputs + 1 );
+
+	matrix w_m_1_2_(num_inputs + 1, num_hidden + 1);
+	
+	matrix hidden_layer_(num_hidden+1, 1);
+	
+	matrix w_m_2_3_(num_hidden + 1, num_outputs);
+	
+	matrix out_(num_outputs, num_outputs);
+
+	matrix del_3_2_(num_outputs, num_outputs);
+	matrix del_2_1_(1, num_hidden + 1);
+	
+	/*for (int i = 0; i < num_inputs+1; i++)
+	{
+		for (int j = 0; j < num_hidden + 1; j++)
+		{
+			w_m_1_2_(i, j) = RandomFloat(-1.2, 1.2);
+		}
+	}
+	*/
+	w_m_1_2_(0, 0) = 0.5f;
+	w_m_1_2_(0, 1) = 0.9f;
+	w_m_1_2_(0, 2) = 0.0f;
+
+	w_m_1_2_(1, 0) = 0.4f;
+	w_m_1_2_(1, 1) = 1.0f;
+	w_m_1_2_(1, 2) = 0.0f;
+
+	w_m_1_2_(2, 0) = 0.8f;// theta 1
+	w_m_1_2_(2, 1) = -0.1f;//// theta 2
+	w_m_1_2_(2, 2) = 1.0f;
+	
+	/*
+	for (int i = 0; i < num_hidden + 1; i++)
+	{
+		w_m_2_3_(i, 0) = RandomFloat(-1.2, 1.2);
+	}
+	*/
+	w_m_2_3_(0, 0) = -1.2f;
+	w_m_2_3_(1, 0) = 1.1f;
+	w_m_2_3_(2, 0) = 0.3f; // theta for output 
+	
+	
+
+
+	float output_error = 0.0f;
+
+	matrix w_m_delta_1_(3, 3);
+	matrix w_m_delta_2_(3, 1);
+
+
+	float alpha = 0.1f;
+	float beta = 0.95f;
+
+	float sum_squared_errors = 0.0f;
+
+
+	timer.Start();
+	
+	//	Sleep(2000);
+
+	float last_sum_squared_errors = 0.0f;
+	int positive_error_delta_count = 0;
+	int negative_error_delta_count = 0;
+	int alternation_count = 0;
+
+	for (int p = 0; p < num_iterations; p++)
+	{
+		sum_squared_errors = 0.0f;
+		for (int q = 0; q < 4; q++)
+		{
+			input_matrix(0, 0) = training[q].v[0];
+			input_matrix(0, 1) = training[q].v[1];
+			input_matrix(0, 2) = -1.0f; // bias is always -1
+
+			float sum[3] = { 0.0f, 0.0f, 0.0f };
+
+
+
+			hidden_layer_ = input_matrix * w_m_1_2_;// -theta_1_;
+
+
+			sigmoid(hidden_layer_, hidden_layer_);
+
+			// OVERWRITE 3rd INPUT
+			hidden_layer_(0, 2) = -1.0f;
+
+			out_ = hidden_layer_ * w_m_2_3_;
+
+			sigmoid(out_, out_);
+
+#ifdef VERBOSE
+			if (p % 250 == 0)
+			{
+				hidden_layer_.print();
+				cout<<endl;
+				out_(0, 0).print();
+				cout<<endl;
+			}
+#endif
+			output_error = desired_output[q] - out_(0, 0);
+
+			sum_squared_errors += output_error * output_error;
+
+
+			// back propogate
+
+			anti_sigmoid(del_3_2_, out_);
+
+			del_3_2_ = del_3_2_ * output_error;
+
+
+
+			anti_sigmoid(del_2_1_, hidden_layer_);
+
+			// put the vector on the diagonal for next operation ...
+			matrix ident_22(3, 3);
+			for (int i = 0; i < 3; i++)
+			{
+				for (int h = 0; h < 3; h++)
+				{
+					if (i == h) ident_22(i, h) = del_2_1_(0, i);
+					else ident_22(i, h) = 0.0f;
+				}
+			}
+
+			
+			del_2_1_ = ident_22 * w_m_2_3_ * del_3_2_(0, 0);
+
+
+			// weight deltas
+
+			w_m_delta_2_.transpose();
+
+			w_m_delta_2_ = w_m_delta_2_ * beta + hidden_layer_ * alpha * del_3_2_(0, 0);
+
+			w_m_delta_2_.transpose();
+
+
+#ifdef VERBOSE
+			if (p % 250 == 0)
+			{
+				del_2_1_.print();
+				cout << endl;
+				de_3_2_.print();
+				cout << endl;
+			}
+#endif
+			w_m_delta_1_.transpose();
+
+			w_m_delta_1_ = w_m_delta_1_ * beta  + del_2_1_ * input_matrix   * alpha;
+
+			w_m_delta_1_.transpose();
+
+#ifdef VERBOSE
+			if (p % 250 == 0)
+			{
+				w_m_delta_1_.print();
+				cout << endl;
+				w_m_delta_2_.print();
+				cout << endl;
+			}
+#endif
+			// update weights
+
+			w_m_1_2_ = w_m_1_2_ + w_m_delta_1_;// 
+
+
+			w_m_2_3_ = w_m_2_3_ + w_m_delta_2_;
+
+#ifdef VERBOSE
+			if (p % 250 == 0)
+			{
+				w_m_1_2_.print();
+				cout << endl;
+				w_m_2_3_.print();
+				cout << endl;
+			}
+#endif
+		}
+
+		// calculate the change in sum_squared_errors
+		float delta_sum_square_errors = sum_squared_errors - last_sum_squared_errors;
+		last_sum_squared_errors = sum_squared_errors;
+		if (delta_sum_square_errors > 0.0f)
+		{
+			if (positive_error_delta_count == 0) {
+				alternation_count++;
+			}
+			else{
+				alternation_count = 0;
+			}
+			positive_error_delta_count++;
+			negative_error_delta_count = 0;
+		}
+		else
+		{
+			if (negative_error_delta_count == 0) {
+				alternation_count++;
+			}
+			else{
+				alternation_count = 0;
+			}
+			negative_error_delta_count++;
+			positive_error_delta_count = 0;
+		}
+
+		// determine change in learning rate
+		if (positive_error_delta_count >= 2 || negative_error_delta_count >= 2)
+		{
+			alpha += 0.1;
+			if (alpha > 1.0f) alpha = 1.0f;
+		}
+		else if (alternation_count >= 2)
+		{
+			alpha -= 0.1;
+			if (alpha < 0.0f) alpha = 0.01;
+		}
+
+		//cout << sum_squared_errors << endl;
+		if (sum_squared_errors < 0.03)
+		{
+			timer.Update();
+			timer.Stop();
+			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.03" << endl << "Total calculation performed in " << timer.GetTimeDelta() << " seconds" << endl;
+			break;
+		}
+	}
+		
 }
 
 int main(int argc, char* argv[])
@@ -755,6 +1006,9 @@ int main(int argc, char* argv[])
 
 	cout << endl << endl << "Version 4 ";
 	Compute_Simple_XOR_network_version_4(5000);
+
+	cout << endl << endl << "Version 5 ";
+	Compute_Simple_XOR_network_version_5(5000);
 	cout << endl << endl;
 	return 0;
 }
