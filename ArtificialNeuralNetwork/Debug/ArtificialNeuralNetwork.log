@@ -1,0 +1,80 @@
+﻿Build started 18/08/2016 03:49:14.
+     1>Project "C:\Users\dave\Documents\GitHub\ArtificialNeuralNetwork\ArtificialNeuralNetwork\ArtificialNeuralNetwork.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ArtificialNeuralNetwork.cpp
+         ArtificialNeuralNetwork.cpp
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(30): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(41): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(71): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(73): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(87): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(89): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(98): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(105): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(108): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(117): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(128): warning C4244: 'argument' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\utils.h(147): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(31): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(33): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(43): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(45): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(68): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(82): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(85): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(98): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(100): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(114): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(116): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(136): warning C4172: returning address of local variable or temporary
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(149): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(151): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(153): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(171): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(173): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(175): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(194): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(197): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(199): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(216): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(218): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(231): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(233): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(250): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(252): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(271): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(274): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(292): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(294): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(309): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(311): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(329): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\my_matrix.h(331): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(27): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(28): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(43): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(44): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(329): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(289) : definition of 'i' ignored
+                 c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(312) : definition of 'i' used
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(332): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(289) : definition of 'i' ignored
+                 c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(312) : definition of 'i' used
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(335): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(289) : definition of 'i' ignored
+                 c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(312) : definition of 'i' used
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(610): warning C4305: 'initializing' : truncation from 'double' to 'float'
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(945): warning C4305: '*=' : truncation from 'double' to 'float'
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(946): warning C4305: '*=' : truncation from 'double' to 'float'
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(976): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(981): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>c:\users\dave\documents\github\artificialneuralnetwork\artificialneuralnetwork\artificialneuralnetwork.cpp(982): warning C4305: '=' : truncation from 'double' to 'float'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\dave\Documents\GitHub\ArtificialNeuralNetwork\Debug\ArtificialNeuralNetwork.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\dave\Documents\GitHub\ArtificialNeuralNetwork\Debug\ArtificialNeuralNetwork.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\dave\Documents\GitHub\ArtificialNeuralNetwork\Debug\ArtificialNeuralNetwork.lib" /MACHINE:X86 Debug\ArtificialNeuralNetwork.obj
+         Debug\stdafx.obj
+         ArtificialNeuralNetwork.vcxproj -> C:\Users\dave\Documents\GitHub\ArtificialNeuralNetwork\Debug\ArtificialNeuralNetwork.exe
+     1>Done Building Project "C:\Users\dave\Documents\GitHub\ArtificialNeuralNetwork\ArtificialNeuralNetwork\ArtificialNeuralNetwork.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.70

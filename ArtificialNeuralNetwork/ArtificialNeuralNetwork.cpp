@@ -942,7 +942,8 @@ void Compute_Simple_XOR_network_version_5(int num_iterations)
 			}
 #endif
 		}
-
+		if (sum_squared_errors > last_sum_squared_errors*1.04) alpha *= 0.7;
+		if (sum_squared_errors < last_sum_squared_errors) alpha *= 1.05;
 		// calculate the change in sum_squared_errors
 		float delta_sum_square_errors = sum_squared_errors - last_sum_squared_errors;
 		last_sum_squared_errors = sum_squared_errors;
@@ -982,11 +983,11 @@ void Compute_Simple_XOR_network_version_5(int num_iterations)
 		}
 
 		//cout << sum_squared_errors << endl;
-		if (sum_squared_errors < 0.03)
+		if (sum_squared_errors < 0.001)
 		{
 			timer.Update();
 			timer.Stop();
-			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.03" << endl << "Total calculation performed in " << timer.GetTimeDelta() << " seconds" << endl;
+			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.001" << endl << "Total calculation performed in " << timer.GetTimeDelta() << " seconds" << endl;
 			break;
 		}
 	}
