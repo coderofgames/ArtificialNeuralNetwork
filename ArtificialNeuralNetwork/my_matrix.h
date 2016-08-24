@@ -135,53 +135,29 @@ public:
 			return is_transposed ? data[j][i] : data[i][j];
 		else return null_return;
 	}
-
-	/*	1 0 0    2 2 2 2    2*1 + 3*0 + 2 * 0
-	0 1 0    3 1 2 1  =
-	0 0 1    2 1 1 3*/
-	matrix* operator^(matrix &b)
+	// Hadamard element wise product
+	matrix operator | (matrix &b)
 	{
-		if (this->NumColumns() == b.NumRows())
+		if (this->NumColumns() == b.NumColumns() && this->NumRows() == b.NumRows())
 		{
 			if (out) delete out;
-			out = new matrix(this->NumRows(), b.NumColumns());
+			out = new matrix(this->NumRows(), this->NumColumns());
 
 			for (int i = 0; i < this->NumRows(); i++)
 			{
-				for (int j = 0; j < b.NumColumns(); j++)
-				{
-					for (int k = 0; k < this->NumColumns(); k++)
-					{
-						(*out)(i, j) += get(i, k) * b(k, j);
-					}
-				}
-			}
-			return out;
-		}
-		return 0;
-	}
 
-	matrix* operator^(matrix *b)
-	{
-		if (this->NumColumns() == b->NumRows())
-		{
-			if (out) delete out;
-			out = new matrix(this->NumRows(), b->NumColumns());
-
-			for (int i = 0; i < this->NumRows(); i++)
-			{
-				for (int j = 0; j < b->NumColumns(); j++)
+				for (int j = 0; j < this->NumColumns(); j++)
 				{
-					for (int k = 0; k < this->NumColumns(); k++)
+					//for (int k = 0; k < this->NumColumns(); k++)
 					{
-						(*out)(i, j) += get(i, k) * b->get(k, j);
+						(*out)(i, j) = get(i, j) * b(i, j);
 					}
 				}
 			}
 
-			return out;
+			return *out;
 		}
-		return 0;
+		return matrix(0, 0);
 	}
 
 	matrix operator*(matrix &b)
@@ -259,6 +235,7 @@ public:
 		}
 		return matrix(0, 0);
 	}
+
 	matrix operator-(matrix &b)
 	{
 		if (this->NumColumns() != b.NumColumns() || this->NumRows() != b.NumRows())
@@ -317,7 +294,8 @@ public:
 		return sum;
 	}
 
-	bool IsSquare() {
+	bool IsSquare() 
+	{
 		if (m_sizeX == m_sizeY)
 			return true;
 
@@ -344,8 +322,14 @@ public:
 
 
 
-	inline unsigned int NumRows() { return  (is_transposed ? m_sizeY : m_sizeX); }
-	inline unsigned int NumColumns() { return (is_transposed ? m_sizeX : m_sizeY); }
+	inline unsigned int NumRows() 
+	{ 
+		return  (is_transposed ? m_sizeY : m_sizeX); 
+	}
+	inline unsigned int NumColumns() 
+	{ 
+		return (is_transposed ? m_sizeX : m_sizeY); 
+	}
 
 
 	bool is_transposed = false;
