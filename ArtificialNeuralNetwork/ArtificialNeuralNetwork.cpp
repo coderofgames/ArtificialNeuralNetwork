@@ -10,6 +10,53 @@
 #include "Utils.h"
 #include "my_matrix.h"
 
+//y = (e^x - e^-x) / (e^x + e^-x).It's derivative is (1 - y)(1 + y).
+
+float tan_hyperbolic(float x)
+{
+	float ex = exp(x);
+	float emx = exp(-x);
+	return (ex - emx) / (ex + emx);
+}
+
+float tan_hyperbolic_deriv(float y)
+{
+	return y * (1 - y);
+}
+
+
+matrix& tan_hyperbolic(matrix &out, matrix &m)
+{
+	if (out.NumColumns() != m.NumColumns() || out.NumRows() != m.NumRows())
+	{
+		out.destroy();
+		out.m_sizeX = m.m_sizeX;
+		out.m_sizeY = m.m_sizeY;
+		out.create();
+	}
+	for (int i = 0; i < m.NumRows(); i++)
+		for (int j = 0; j < m.NumColumns(); j++)
+			out(i, j) = tan_hyperbolic( m(i, j) );
+
+	return out;
+}
+
+matrix& tan_hyperbolic_derivative(matrix& out, matrix &m)
+{
+	if (out.NumColumns() != m.NumColumns() || out.NumRows() != m.NumRows())
+	{
+		out.destroy();
+		out.m_sizeX = m.m_sizeX;
+		out.m_sizeY = m.m_sizeY;
+		out.create();
+	}
+	for (int i = 0; i < m.NumRows(); i++)
+		for (int j = 0; j < m.NumColumns(); j++)
+			out(i, j) = tan_hyperbolic_deriv(m(i, j));
+
+	return out;
+}
+
 float sigmoid(float x)
 {
 	return 1.f / (1.f + exp(-x));
@@ -1270,6 +1317,327 @@ void Compute_Simple_XOR_network_version_6(int num_iterations)
 
 }
 
+
+//#define VERBOSE
+class Layer
+{
+public:
+	matrix nuerons_;
+	matrix thetas_;
+	matrix weights_;
+
+	matrix delta_thetas_;
+	matrix delta_weights_;
+
+	matrix deltas_;
+
+	Layer(){}
+
+	Layer(unsigned int num_elements, unsigned int num_inputs)
+	{
+		nuerons_.m_sizeX = 1;
+		nuerons_.m_sizeY = num_elements;
+		nuerons_.create();
+
+		weights_.m_sizeX = num_inputs;
+		weights_.m_sizeY = num_elements;
+		weights_.create();
+
+		thetas_.m_sizeX = 1;
+		thetas_.m_sizeY = num_elements;
+		thetas_.create();
+
+		delta_weights_.m_sizeX = num_inputs;
+		delta_weights_.m_sizeY = num_elements;
+		delta_weights_.create();
+
+		delta_thetas_.m_sizeX = 1;
+		delta_thetas_.m_sizeY = num_elements;
+		delta_thetas_.create();
+	}
+
+	void InitSampleRandomValues_1()
+	{
+		weights_(0, 0) = 0.5f;
+		weights_(0, 1) = 0.9f;
+
+		weights_(1, 0) = 0.4f;
+		weights_(1, 1) = 1.0f;
+
+
+		thetas_(0, 0) = 0.8f;// theta 1
+		thetas_(0, 1) = -0.1f;//// theta 2
+	}
+
+	void InitSampleRandomValues_2()
+	{
+		weights_(0, 0) = -1.2f;
+		weights_(1, 0) = 1.1f;
+			
+		thetas_(0, 0) = 0.3f;
+	}
+
+	void FeedForward(matrix &input_matrix)
+	{
+		nuerons_ = input_matrix * weights_ - thetas_;
+		sigmoid(nuerons_, nuerons_);
+	}
+
+	void BackPropogate(matrix &next_layer_weights_, matrix &next_layer_delta_weights_)
+	{
+		anti_sigmoid(deltas_, nuerons_);
+
+		// put the vector on the diagonal for next operation ...
+
+
+		next_layer_weights_.transpose();
+
+		deltas_ = deltas_ | next_layer_weights_ * next_layer_delta_weights_;
+
+		next_layer_weights_.transpose();
+
+	}
+
+	void ComputeWeightDeltas(matrix &input_matrix, float alpha, float beta)
+	{
+		delta_weights_.transpose();
+
+		deltas_.transpose();
+
+		delta_weights_ = delta_weights_ * beta + deltas_* input_matrix * alpha;
+
+		delta_weights_.transpose();
+
+		deltas_.transpose();
+
+		delta_thetas_ = delta_thetas_ * beta + deltas_* (-1.0f) * alpha;
+	}
+
+
+	void UpdateWeights()
+	{
+		weights_ = weights_ + delta_weights_;// 
+
+		thetas_ = thetas_ + delta_thetas_ ;
+	}
+
+	void PrintNeurons()
+	{
+		cout << "Neurons" << endl;
+		nuerons_.print();
+		cout <<  endl;
+	}
+
+	void PrintDeltas()
+	{
+		cout << "Deltas" << endl;
+		deltas_.print();
+	}
+	void PrintDeltaWeights()
+	{
+		cout << "Delta Weights" << endl;
+		delta_weights_.print();
+	}
+	void PrintDeltaThetas()
+	{
+		cout << "Delta Thetas" << endl;
+		delta_thetas_.print();
+	}
+
+	void PrintWeights()
+	{
+		cout << "Weights" << endl;
+		weights_.print();
+	}
+};
+void Compute_Simple_XOR_network_version_7(int num_iterations)
+{
+	Timer timer;
+
+	// TRAINING SET FOR EXCLUSIVE OR GATE
+	vector<vector2d > training;
+	training.push_back(vector2d{ { 0.f, 0.f } });
+	training.push_back(vector2d{ { 0.f, 1.f } });
+	training.push_back(vector2d{ { 1.f, 0.f } });
+	training.push_back(vector2d{ { 1.f, 1.f } });
+
+	float desired_output[4] = { 0.f, 1.f, 1.f, 0.f };
+
+	int input_data_size = 1;
+	int num_inputs = 2;
+	int num_hidden = 2;
+	int num_outputs = 1;
+
+	// ==========================================
+	matrix input_matrix(1, num_inputs);
+
+	
+	float output_error = 0.0f;
+
+	
+
+	float alpha = 0.1f;
+	float beta = 0.95f;
+
+	float sum_squared_errors = 0.0f;
+
+	Layer hidden(num_hidden, num_inputs);
+	hidden.InitSampleRandomValues_1();
+
+	Layer output(num_outputs, num_hidden);
+	output.InitSampleRandomValues_2();
+
+	timer.Start();
+
+	//	Sleep(2000);
+
+	float last_sum_squared_errors = 0.0f;
+	int positive_error_delta_count = 0;
+	int negative_error_delta_count = 0;
+	int alternation_count = 0;
+
+	for (int p = 0; p < num_iterations; p++)
+	{
+		sum_squared_errors = 0.0f;
+		for (int q = 0; q < 4; q++)
+		{
+			input_matrix(0, 0) = training[q].v[0];
+			input_matrix(0, 1) = training[q].v[1];
+			//input_matrix(0, 2) = -1.0f; // bias is always -1
+
+			
+
+			hidden.FeedForward(input_matrix);
+
+			output.FeedForward(hidden.nuerons_);
+
+
+
+#ifdef VERBOSE
+			//if (p % 250 == 0)
+			{
+
+				hidden.PrintNeurons();
+				output.PrintNeurons();
+			}
+#endif
+			output_error = desired_output[q] - output.nuerons_(0, 0);
+
+
+			sum_squared_errors += output_error* output_error;
+
+
+			// back propogate
+			matrix unit(1, 1);
+			unit(0, 0) = 1.0f;
+			
+			matrix output_error_matrix(1, 1);
+			output_error_matrix(0, 0) = output_error;
+
+
+			output.BackPropogate(unit, output_error_matrix);
+			
+			hidden.BackPropogate(output.weights_, output.deltas_);
+
+
+
+
+			
+
+#ifdef VERBOSE
+			//if (p % 250 == 0)
+			{
+				cout << "Deltas" << endl;
+				
+
+				hidden.PrintDeltas();
+				output.PrintDeltas();
+			}
+#endif
+			// weight deltas
+
+			output.ComputeWeightDeltas(hidden.nuerons_, alpha, beta);
+
+			hidden.ComputeWeightDeltas(input_matrix, alpha, beta);
+
+
+
+#ifdef VERBOSE
+			//if (p % 250 == 0)
+			{
+				cout << "Weight Deltas" << endl;
+               
+
+				hidden.PrintDeltaWeights();
+				output.PrintDeltaWeights();
+			}
+#endif
+
+			output.UpdateWeights();
+
+			hidden.UpdateWeights();
+
+#ifdef VERBOSE
+			//if (p % 250 == 0)
+			{
+
+				hidden.PrintWeights();
+				output.PrintWeights();
+			}
+#endif
+		}
+		if (sum_squared_errors > last_sum_squared_errors*1.04) alpha *= 0.7;
+		if (sum_squared_errors < last_sum_squared_errors) alpha *= 1.05;
+		// calculate the change in sum_squared_errors
+		float delta_sum_square_errors = sum_squared_errors - last_sum_squared_errors;
+		last_sum_squared_errors = sum_squared_errors;
+		if (delta_sum_square_errors > 0.0f)
+		{
+			if (positive_error_delta_count == 0) {
+				alternation_count++;
+			}
+			else{
+				alternation_count = 0;
+			}
+			positive_error_delta_count++;
+			negative_error_delta_count = 0;
+		}
+		else
+		{
+			if (negative_error_delta_count == 0) {
+				alternation_count++;
+			}
+			else{
+				alternation_count = 0;
+			}
+			negative_error_delta_count++;
+			positive_error_delta_count = 0;
+		}
+
+		// determine change in learning rate
+		if (positive_error_delta_count >= 2 || negative_error_delta_count >= 2)
+		{
+			alpha += 0.1;
+			if (alpha > 1.0f) alpha = 1.0f;
+		}
+		else if (alternation_count >= 2)
+		{
+			alpha -= 0.1;
+			if (alpha < 0.0f) alpha = 0.01;
+		}
+
+		//cout << sum_squared_errors << endl;
+		if (sum_squared_errors < 0.001)
+		{
+			timer.Update();
+			timer.Stop();
+			cout << "Finished on iteration: " << p << ", with sum squared errors less than 0.001" << endl << "Total calculation performed in " << timer.GetTimeDelta() << " seconds" << endl;
+			break;
+		}
+	}
+
+}
+
 int main(int argc, char* argv[])
 {
 	cout << endl << endl << "Version 1 ";
@@ -1289,6 +1657,10 @@ int main(int argc, char* argv[])
 
 	cout << endl << endl << "Version 6 ";
 	Compute_Simple_XOR_network_version_6(5000);
+	
+
+	cout << endl << endl << "Version 7 ";
+	Compute_Simple_XOR_network_version_7(5000);
 	cout << endl << endl;
 	return 0;
 }

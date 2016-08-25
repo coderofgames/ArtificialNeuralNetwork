@@ -162,6 +162,10 @@ public:
 
 	matrix operator*(matrix &b)
 	{
+		if (b.NumColumns() == 1 && b.NumRows() == 1)
+		{
+			return (*this) * b(0, 0);
+		}
 		if (this->NumColumns() == b.NumRows())
 		{
 			if (out) delete out;
@@ -213,7 +217,20 @@ public:
 		}
 		return *out;
 	}
+	matrix operator+(float s)
+	{
+		if (out) delete out;
+		out = new matrix(this->NumRows(), this->NumColumns());
 
+		for (int i = 0; i < this->NumRows(); i++)
+		{
+			for (int j = 0; j < this->NumColumns(); j++)
+			{
+				(*out)(i, j) = get(i, j) + s;
+			}
+		}
+		return *out;
+	}
 	matrix operator+(matrix &b)
 	{
 		if (this->NumColumns() != b.NumColumns() || this->NumRows() != b.NumRows())
