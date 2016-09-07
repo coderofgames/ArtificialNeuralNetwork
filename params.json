@@ -1,0 +1,6 @@
+{
+  "name": "Artificialneuralnetwork",
+  "tagline": "",
+  "body": "========================================================================\r\n    CONSOLE APPLICATION : ArtificialNeuralNetwork Project Overview\r\n========================================================================\r\n\r\nBasic back propogation neural network solving the Exlusive Or problem. A classic\r\nMcCullogh Pitts neural network. Numerical style. \r\n\r\n<img src=\"NN.jpg\"></img>\r\n\r\n1) Updated with some additional versions, moving towards generalizing the calculations\r\ninto matrix form.\r\n2) added a simple matrix class, would replace with BLAS or something (maybe eigen)\r\n3) added a class to load the iris dataset and process into a form ready to use in a neural network\r\n4) added some optimizations including momentum term, and learning rate heuristic tuning to prevent\r\noscillatory behavior with higher learning rate. This can be viewed in version 5 of the function.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
