@@ -5,6 +5,9 @@
 Basic back propogation neural network solving the Exlusive Or problem. A classic
 McCullogh Pitts neural network. Numerical style. 
 
+For more information please see the book "Artificial Intelligence, A guide to Intelligent Systems" 
+by Michael Negnevitsky - this book contains the source mathematics and example weights.
+
 <img src="NN.jpg"></img>
 
 1) Updated with some additional versions, moving towards generalizing the calculations
